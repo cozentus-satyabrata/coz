@@ -30,7 +30,7 @@ def home():
 @app.route('/predict',methods=['POST'])
 @cross_origin()
 def predict():
-    url = 'https://raw.githubusercontent.com/cozentus-satyabrata/coz/master/Routes.csv'
+    url = 'https://raw.githubusercontent.com/cozentus-satyabrata/coz/master/data.csv'
     df = pd.read_csv(url)
     print(df)
     ac=df['Origin'][149]
