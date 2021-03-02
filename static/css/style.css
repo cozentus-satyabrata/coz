@@ -1,0 +1,58 @@
+div.jithu
+{
+    display: block;
+    text-align: center;
+  margin-top: 165px;
+}
+form
+{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+  margin-top: auto;
+    text-align: left;
+  font-family: Segoe UI;
+}
+
+table {
+  border-radius: 5px;
+  background-color: #ecd0d0;
+  padding: 20px;
+  opacity: 1; 
+}
+
+td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+}
+
+button[type=submit]{
+  background-color: #217d86;
+  padding: 5px;
+  border-radius: 5px;
+  font-family: 'Arial'; 
+  font-size: 14px;
+  font-family: Segoe UI;
+}
+
+
+h1 {
+  text-align: center;
+}
+
+
+
+body { 
+  background: url('background.jpg') no-repeat center center fixed; 
+  background-size: cover;
+}
+
+.result_table{
+  margin-left: 44.25% !important;
+}
+
+
+

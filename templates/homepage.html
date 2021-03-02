@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html >
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
+<head>
+  <meta charset="UTF-8">
+  <title>ML API</title>
+  <link rel="stylesheet" href="static/css/style.css">
+ 
+</head>
+
+<body>
+<div class="jithu">
+
+
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}"method="post">
+        <table>
+      <tr>
+        <td colspan="4" style="text-align:center;"><h1>Predict ETA</h1></td>
+      </tr>
+          <tr>
+            <td>
+              <label for="Origin">Origin</label>
+            </td>
+      <td>
+              <select name="Origin" id="Origin" style="font-family: Segoe UI">
+        <option></option>
+              <option value="Shenzhen">Shenzhen</option>
+              <option value="Guangzhou">Guangzhou</option>
+              <option value="New York">New York</option>
+              <option value="Savannah">Savannah</option>
+              <option value="Ningbo">Ningbo</option>
+              <option value="Shanghai">Shanghai</option>
+              <option value="Qingdao">Qingdao</option>
+              <option value="Long Beach">Long Beach</option>
+              <option value="Los Angeles">Los Angeles</option>
+              <option value="Seattle">Seattle</option>
+              </select>
+            </td>
+            <td>
+              <label for="Destination">Destination</label>
+            </td>
+      <td>
+              <select name="Destination" id="Destination" style="font-family: Segoe UI">
+              <option></option>
+        <option value="New York">New York</option>
+              <option value="Savannah">Savannah</option>
+              <option value="Ningbo">Ningbo</option>
+              <option value="Shanghai">Shanghai</option>
+              <option value="Qingdao">Qingdao</option>
+              <option value="Long Beach">Long Beach</option>
+              <option value="Los Angeles">Los Angeles</option>
+              <option value="Seattle">Seattle</option>
+        <option value="Shenzhen">Shenzhen</option>
+              <option value="Guangzhou">Guangzhou</option>
+              </select>
+            </td>
+            
+          </tr>
+		     <tr>
+            <td>
+              <label for="ETD">Start Date</label>
+      </td>
+      <td>
+             <input type="date" id="ETD" name="ETD">
+            </td>
+       
+      <td>
+              <label for="Weight">Weight</label>
+      </td>
+      <td colspan="4">
+              <input type="text" name="Weight" placeholder="In Tons" required="required" size=8.8/>
+            </td>
+          </tr>
+
+          
+          <tr>
+        <td colspan="4" style="text-align:center;">
+         <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
+      </td>
+          </tr> 
+        </table>
+    </form>
+
+   <br>
+ </div>
+
+<div  id="tableDiv"  class='restable'>
+	{% for table in tables %}
+		{{ table|safe }}
+	{% endfor %} 
+</div>
+
+</body>
+</html>
