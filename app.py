@@ -30,25 +30,15 @@ def home():
 @app.route('/predict',methods=['POST'])
 @cross_origin()
 def predict():
-#     url = 'https://drive.google.com/file/d/1Gl5hCaXAusU3arqdYZGZSh98K3hoqQuZ/view?usp=sharing'
-# #url = 'https://drive.google.com/file/d/0B6GhBwm5vaB2ekdlZW5WZnppb28/view?usp=sharing'
-#     path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
-    df = pd.read_excel('Routes_Clean_New.xlsx')
-    ac=df['Origin'][0]
-#     ac=df["Origin"][1]
-#     #ac=data['Origin'][1]
-#     #https://raw.githubusercontent.com/cozentus-satyabrata/herokueta/main/Routes.csv?token=ASYTOAXEBNWGCIAJH2A6TH3AHX2CA
-    
-    
-    #url = 'https://raw.githubusercontent.com/cozentus-satyabrata/herokueta/main/Routes.csv?token=ASYTOAXEBNWGCIAJH2A6TH3AHX2CA'
-    #df = pd.read_csv(url,index_col=0)
-    
+    url = 'https://raw.githubusercontent.com/cozentus-satyabrata/coz/master/Routes.csv'
+    df = pd.read_csv(url)
+    print(df)
+    ac=df['Origin'][149]
     
     
     
 
     return ac
-
 
 
 if __name__ == "__main__":
