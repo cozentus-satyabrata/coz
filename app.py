@@ -33,7 +33,7 @@ def predict():
     url = 'https://raw.githubusercontent.com/cozentus-satyabrata/coz/master/data.csv'
     df = pd.read_csv(url)
     print(df)
-    ac=df['Origin'][149]
+    ac=df['Origin'][2000]
     
     
     
