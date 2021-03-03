@@ -354,24 +354,24 @@ def predict():
     #print(f_P)
     return respone
               
-    @app.route("/RoutesMapWeatherMapPanama")
-    @cross_origin()
-    def RoutesMapWeatherMapGuangzhouNew_YorkPanama():
-        return render_template("RoutesMapWeatherMap"+o+d+"Panama"+".html")
+@app.route("/RoutesMapWeatherMapPanama")
+@cross_origin()
+def RoutesMapWeatherMapGuangzhouNew_YorkPanama():
+    return render_template("RoutesMapWeatherMap"+o+d+"Panama"+".html")
 
 
 
-    @app.route('/RoutesMapWeatherMapCapeofGoodHope')
-    @cross_origin()
-    def RoutesMapWeatherMapGuangzhouNew_YorkCapeofGoodhope():
-        return render_template("RoutesMapWeatherMap"+o+d+"Cape of Good Hope"+".html")
+@app.route('/RoutesMapWeatherMapCapeofGoodHope')
+@cross_origin()
+def RoutesMapWeatherMapGuangzhouNew_YorkCapeofGoodhope():
+    return render_template("RoutesMapWeatherMap"+o+d+"Cape of Good Hope"+".html")
 
 
 
-    @app.route('/RoutesMapWeatherMapSuez')
-    @cross_origin()
-    def RoutesMapWeatherMapGuangzhouNew_YorkSuez():
-        return render_template("RoutesMapWeatherMap"+o+d+"Suez"+".html")          
+@app.route('/RoutesMapWeatherMapSuez')
+@cross_origin()
+def RoutesMapWeatherMapGuangzhouNew_YorkSuez():
+    return render_template("RoutesMapWeatherMap"+o+d+"Suez"+".html")          
 
 if __name__ == "__main__":
     app.run(debug=False)
