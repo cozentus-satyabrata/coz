@@ -348,7 +348,7 @@ def predict():
     p_PC=round(100*round(1/a_PC, 3),2)
     p_CC=round(100*round(1/a_CC, 3),2)
     p_SC=round(100*round(1/a_SC, 3),2)
-    dataRow ={'originPort':[o,o,o],'destinationPort':[d,d,d],'startDate':[da,da,da],'predictedEta':[output_P,output_C,output_S],'tradeLaneURl': ["/RoutesMapWeatherMap"+o+d+p+".html" , "/RoutesMapWeatherMap"+o+d+q+".html","/RoutesMapWeatherMap"+o+d+t+".html"],'tradeLaneName':['Panama','Cape of Good Hope','Suez'],'Probablity':[p_PC,p_CC,p_SC],'ETA':[int(f_P),int(f_C),int(f_S)],'Diff':[abs(output_P-int(f_P)),abs(output_C-int(f_C)),abs(output_S-int(f_S))]}
+    dataRow ={'originPort':[o,o,o],'destinationPort':[d,d,d],'startDate':[da,da,da],'predictedEta':[output_P,output_C,output_S],'tradeLaneURl': ["https://etacoz.azurewebsites.net/RoutesMapWeatherMapPanama" , "https://etacoz.azurewebsites.net/RoutesMapWeatherMapCapeofGoodHope","https://etacoz.azurewebsites.net/RoutesMapWeatherMapSuez"],'tradeLaneName':['Panama','Cape of Good Hope','Suez'],'Probablity':[p_PC,p_CC,p_SC],'ETA':[int(f_P),int(f_C),int(f_S)],'Diff':[abs(output_P-int(f_P)),abs(output_C-int(f_C)),abs(output_S-int(f_S))]}
     respone=jsonify(result=dataRow)
     respone.status_code=200
     #print(f_P)
