@@ -30,26 +30,348 @@ def home():
 @app.route('/predict',methods=['POST'])
 @cross_origin()
 def predict():
-#     url = 'https://drive.google.com/file/d/1Gl5hCaXAusU3arqdYZGZSh98K3hoqQuZ/view?usp=sharing'
-# #url = 'https://drive.google.com/file/d/0B6GhBwm5vaB2ekdlZW5WZnppb28/view?usp=sharing'
-#     path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
-    df = pd.read_excel('Routes_Clean_New.xlsx')
-    ac=df['Origin'][0]
-#     ac=df["Origin"][1]
-#     #ac=data['Origin'][1]
-#     #https://raw.githubusercontent.com/cozentus-satyabrata/herokueta/main/Routes.csv?token=ASYTOAXEBNWGCIAJH2A6TH3AHX2CA
+    a=request.json
+    b=list(a.values())
+    print(b)
+    
+    final_features = [b]
+    org=final_features[0][0]
+    des=final_features[0][1]
+    date=final_features[0][2]
+    global o
+    o=org
+    global d
+    d=des
+    #w=weight
+    da=date
+    
+    date=pd.to_datetime(date)
+    year=date.year
+    month=date.month
+    week=date.week
+    day=date.day
+    dateweek=date.dayofweek
     
     
-    #url = 'https://raw.githubusercontent.com/cozentus-satyabrata/herokueta/main/Routes.csv?token=ASYTOAXEBNWGCIAJH2A6TH3AHX2CA'
-    #df = pd.read_csv(url,index_col=0)
+    Origin = org
+    Destination = des
+    Canal_P = 'Panama'
+    Canal_C = 'Cape of Good Hope'
+    Canal_S = 'Suez'
+    p=Canal_P
+    q=Canal_C
+    t=Canal_S
+
+
     
     
     
+    str_P = Origin+"|"+Destination+"|"+Canal_P
+    str_C = Origin+"|"+Destination+"|"+Canal_C
+    str_S = Origin+"|"+Destination+"|"+Canal_S
+    #map_dict={'Guangzhou|Long Beach|Panama': 53, 'Guangzhou|Long Beach|Cape of Good Hope': 53, 'Guangzhou|Long Beach|Suez': 53, 'Guangzhou|Los Angeles|Panama': 53, 'Guangzhou|Los Angeles|Cape of Good Hope': 53, 'Guangzhou|Los Angeles|Suez': 53, 'Guangzhou|New York|Panama': 53, 'Guangzhou|New York|Cape of Good Hope': 53, 'Guangzhou|New York|Suez': 53, 'Guangzhou|Savannah|Panama': 53, 'Guangzhou|Savannah|Cape of Good Hope': 53, 'Guangzhou|Savannah|Suez': 53, 'Guangzhou|Seattle|Panama': 53, 'Guangzhou|Seattle|Cape of Good Hope': 53, 'Guangzhou|Seattle|Suez': 53, 'Ningbo|Long Beach|Panama': 53, 'Ningbo|Long Beach|Cape of Good Hope': 53, 'Ningbo|Long Beach|Suez': 53, 'Ningbo|Los Angeles|Panama': 53, 'Ningbo|Los Angeles|Cape of Good Hope': 53, 'Ningbo|Los Angeles|Suez': 53, 'Ningbo|New York|Panama': 53, 'Ningbo|New York|Cape of Good Hope': 53, 'Ningbo|New York|Suez': 53, 'Ningbo|Savannah|Panama': 53, 'Ningbo|Savannah|Cape of Good Hope': 53, 'Ningbo|Savannah|Suez': 53, 'Ningbo|Seattle|Panama': 53, 'Ningbo|Seattle|Cape of Good Hope': 53, 'Ningbo|Seattle|Suez': 53, 'Qingdao|Long Beach|Panama': 53, 'Qingdao|Long Beach|Cape of Good Hope': 53, 'Qingdao|Long Beach|Suez': 53, 'Qingdao|Los Angeles|Panama': 53, 'Qingdao|Los Angeles|Cape of Good Hope': 53, 'Qingdao|Los Angeles|Suez': 53, 'Qingdao|New York|Panama': 53, 'Qingdao|New York|Cape of Good Hope': 53, 'Qingdao|New York|Suez': 53, 'Qingdao|Savannah|Panama': 53, 'Qingdao|Savannah|Cape of Good Hope': 53, 'Qingdao|Savannah|Suez': 53, 'Qingdao|Seattle|Panama': 53, 'Qingdao|Seattle|Cape of Good Hope': 53, 'Qingdao|Seattle|Suez': 53, 'Shanghai|Long Beach|Panama': 53, 'Shanghai|Long Beach|Cape of Good Hope': 53, 'Shanghai|Long Beach|Suez': 53, 'Shanghai|Los Angeles|Panama': 53, 'Shanghai|Los Angeles|Cape of Good Hope': 53, 'Shanghai|Los Angeles|Suez': 53, 'Shanghai|New York|Panama': 53, 'Shanghai|New York|Cape of Good Hope': 53, 'Shanghai|New York|Suez': 53, 'Shanghai|Savannah|Panama': 53, 'Shanghai|Savannah|Cape of Good Hope': 53, 'Shanghai|Savannah|Suez': 53, 'Shanghai|Seattle|Panama': 53, 'Shanghai|Seattle|Cape of Good Hope': 53, 'Shanghai|Seattle|Suez': 53, 'Shenzhen|Long Beach|Panama': 53, 'Shenzhen|Long Beach|Cape of Good Hope': 53, 'Shenzhen|Long Beach|Suez': 53, 'Shenzhen|Los Angeles|Panama': 53, 'Shenzhen|Los Angeles|Cape of Good Hope': 53, 'Shenzhen|Los Angeles|Suez': 53, 'Shenzhen|New York|Panama': 53, 'Shenzhen|New York|Cape of Good Hope': 53, 'Shenzhen|New York|Suez': 53, 'Shenzhen|Savannah|Panama': 53, 'Shenzhen|Savannah|Cape of Good Hope': 53, 'Shenzhen|Savannah|Suez': 53, 'Shenzhen|Seattle|Panama': 53, 'Shenzhen|Seattle|Cape of Good Hope': 53, 'Shenzhen|Seattle|Suez': 53, 'Long Beach|Guangzhou|Panama': 53, 'Long Beach|Guangzhou|Cape of Good Hope': 53, 'Long Beach|Guangzhou|Suez': 53, 'Long Beach|Ningbo|Panama': 53, 'Long Beach|Ningbo|Cape of Good Hope': 53, 'Long Beach|Ningbo|Suez': 53, 'Long Beach|Qingdao|Panama': 53, 'Long Beach|Qingdao|Cape of Good Hope': 53, 'Long Beach|Qingdao|Suez': 53, 'Long Beach|Shanghai|Panama': 53, 'Long Beach|Shanghai|Cape of Good Hope': 53, 'Long Beach|Shanghai|Suez': 53, 'Long Beach|Shenzhen|Panama': 53, 'Long Beach|Shenzhen|Cape of Good Hope': 53, 'Long Beach|Shenzhen|Suez': 53, 'Los Angeles|Guangzhou|Panama': 53, 'Los Angeles|Guangzhou|Cape of Good Hope': 53, 'Los Angeles|Guangzhou|Suez': 53, 'Los Angeles|Ningbo|Panama': 53, 'Los Angeles|Ningbo|Cape of Good Hope': 53, 'Los Angeles|Ningbo|Suez': 53, 'Los Angeles|Qingdao|Panama': 53, 'Los Angeles|Qingdao|Cape of Good Hope': 53, 'Los Angeles|Qingdao|Suez': 53, 'Los Angeles|Shanghai|Panama': 53, 'Los Angeles|Shanghai|Cape of Good Hope': 53, 'Los Angeles|Shanghai|Suez': 53, 'Los Angeles|Shenzhen|Panama': 53, 'Los Angeles|Shenzhen|Cape of Good Hope': 53, 'Los Angeles|Shenzhen|Suez': 53, 'New York|Guangzhou|Panama': 53, 'New York|Guangzhou|Cape of Good Hope': 53, 'New York|Guangzhou|Suez': 53, 'New York|Ningbo|Panama': 53, 'New York|Ningbo|Cape of Good Hope': 53, 'New York|Ningbo|Suez': 53, 'New York|Qingdao|Panama': 53, 'New York|Qingdao|Cape of Good Hope': 53, 'New York|Qingdao|Suez': 53, 'New York|Shanghai|Panama': 53, 'New York|Shanghai|Cape of Good Hope': 53, 'New York|Shanghai|Suez': 53, 'New York|Shenzhen|Panama': 53, 'New York|Shenzhen|Cape of Good Hope': 53, 'New York|Shenzhen|Suez': 53, 'Savannah|Guangzhou|Panama': 53, 'Savannah|Guangzhou|Cape of Good Hope': 53, 'Savannah|Guangzhou|Suez': 53, 'Savannah|Ningbo|Panama': 53, 'Savannah|Ningbo|Cape of Good Hope': 53, 'Savannah|Ningbo|Suez': 53, 'Savannah|Qingdao|Panama': 53, 'Savannah|Qingdao|Cape of Good Hope': 53, 'Savannah|Qingdao|Suez': 53, 'Savannah|Shanghai|Panama': 53, 'Savannah|Shanghai|Cape of Good Hope': 53, 'Savannah|Shanghai|Suez': 53, 'Savannah|Shenzhen|Panama': 53, 'Savannah|Shenzhen|Cape of Good Hope': 53, 'Savannah|Shenzhen|Suez': 53, 'Seattle|Guangzhou|Panama': 53, 'Seattle|Guangzhou|Cape of Good Hope': 53, 'Seattle|Guangzhou|Suez': 53, 'Seattle|Ningbo|Panama': 53, 'Seattle|Ningbo|Cape of Good Hope': 53, 'Seattle|Ningbo|Suez': 53, 'Seattle|Qingdao|Panama': 53, 'Seattle|Qingdao|Cape of Good Hope': 53, 'Seattle|Qingdao|Suez': 53, 'Seattle|Shanghai|Panama': 53, 'Seattle|Shanghai|Cape of Good Hope': 53, 'Seattle|Shanghai|Suez': 53, 'Seattle|Shenzhen|Panama': 53, 'Seattle|Shenzhen|Cape of Good Hope': 53, 'Seattle|Shenzhen|Suez': 53}
+    map_dict={'Guangzhou|Long Beach|Panama': 20, 'Guangzhou|Long Beach|Cape of Good Hope': 52, 'Guangzhou|Long Beach|Suez': 50, 'Guangzhou|Los Angeles|Panama': 20, 'Guangzhou|Los Angeles|Cape of Good Hope': 52, 'Guangzhou|Los Angeles|Suez': 50, 'Guangzhou|New York|Panama': 36, 'Guangzhou|New York|Cape of Good Hope': 43, 'Guangzhou|New York|Suez': 37, 'Guangzhou|Savannah|Panama': 34, 'Guangzhou|Savannah|Cape of Good Hope': 44, 'Guangzhou|Savannah|Suez': 39, 'Guangzhou|Seattle|Panama': 18, 'Guangzhou|Seattle|Cape of Good Hope': 56, 'Guangzhou|Seattle|Suez': 54, 'Ningbo|Long Beach|Panama': 18, 'Ningbo|Long Beach|Cape of Good Hope': 54, 'Ningbo|Long Beach|Suez': 51, 'Ningbo|Los Angeles|Panama': 18, 'Ningbo|Los Angeles|Cape of Good Hope': 54, 'Ningbo|Los Angeles|Suez': 51, 'Ningbo|New York|Panama': 34, 'Ningbo|New York|Cape of Good Hope': 45, 'Ningbo|New York|Suez': 38, 'Ningbo|Savannah|Panama': 32, 'Ningbo|Savannah|Cape of Good Hope': 46, 'Ningbo|Savannah|Suez': 40, 'Ningbo|Seattle|Panama': 16, 'Ningbo|Seattle|Cape of Good Hope': 58, 'Ningbo|Seattle|Suez': 55, 'Qingdao|Long Beach|Panama': 18, 'Qingdao|Long Beach|Cape of Good Hope': 56, 'Qingdao|Long Beach|Suez': 53, 'Qingdao|Los Angeles|Panama': 18, 'Qingdao|Los Angeles|Cape of Good Hope': 56, 'Qingdao|Los Angeles|Suez': 53, 'Qingdao|New York|Panama': 34, 'Qingdao|New York|Cape of Good Hope': 47, 'Qingdao|New York|Suez': 40, 'Qingdao|Savannah|Panama': 32, 'Qingdao|Savannah|Cape of Good Hope': 48, 'Qingdao|Savannah|Suez': 42, 'Qingdao|Seattle|Panama': 16, 'Qingdao|Seattle|Cape of Good Hope': 60, 'Qingdao|Seattle|Suez': 57, 'Shanghai|Long Beach|Panama': 18, 'Shanghai|Long Beach|Cape of Good Hope': 55, 'Shanghai|Long Beach|Suez': 52, 'Shanghai|Los Angeles|Panama': 18, 'Shanghai|Los Angeles|Cape of Good Hope': 55, 'Shanghai|Los Angeles|Suez': 52, 'Shanghai|New York|Panama': 33, 'Shanghai|New York|Cape of Good Hope': 46, 'Shanghai|New York|Suez': 39, 'Shanghai|Savannah|Panama': 32, 'Shanghai|Savannah|Cape of Good Hope': 47, 'Shanghai|Savannah|Suez': 41, 'Shanghai|Seattle|Panama': 16, 'Shanghai|Seattle|Cape of Good Hope': 59, 'Shanghai|Seattle|Suez': 56, 'Shenzhen|Long Beach|Panama': 20, 'Shenzhen|Long Beach|Cape of Good Hope': 52, 'Shenzhen|Long Beach|Suez': 49, 'Shenzhen|Los Angeles|Panama': 20, 'Shenzhen|Los Angeles|Cape of Good Hope': 52, 'Shenzhen|Los Angeles|Suez': 49, 'Shenzhen|New York|Panama': 36, 'Shenzhen|New York|Cape of Good Hope': 43, 'Shenzhen|New York|Suez': 36, 'Shenzhen|Savannah|Panama': 34, 'Shenzhen|Savannah|Cape of Good Hope': 44, 'Shenzhen|Savannah|Suez': 38, 'Shenzhen|Seattle|Panama': 18, 'Shenzhen|Seattle|Cape of Good Hope': 56, 'Shenzhen|Seattle|Suez': 53, 'Long Beach|Guangzhou|Panama': 20, 'Long Beach|Guangzhou|Cape of Good Hope': 52, 'Long Beach|Guangzhou|Suez': 50, 'Long Beach|Ningbo|Panama': 18, 'Long Beach|Ningbo|Cape of Good Hope': 54, 'Long Beach|Ningbo|Suez': 51, 'Long Beach|Qingdao|Panama': 18, 'Long Beach|Qingdao|Cape of Good Hope': 56, 'Long Beach|Qingdao|Suez': 53, 'Long Beach|Shanghai|Panama': 18, 'Long Beach|Shanghai|Cape of Good Hope': 55, 'Long Beach|Shanghai|Suez': 52, 'Long Beach|Shenzhen|Panama': 20, 'Long Beach|Shenzhen|Cape of Good Hope': 52, 'Long Beach|Shenzhen|Suez': 49, 'Los Angeles|Guangzhou|Panama': 20, 'Los Angeles|Guangzhou|Cape of Good Hope': 52, 'Los Angeles|Guangzhou|Suez': 50, 'Los Angeles|Ningbo|Panama': 18, 'Los Angeles|Ningbo|Cape of Good Hope': 54, 'Los Angeles|Ningbo|Suez': 51, 'Los Angeles|Qingdao|Panama': 18, 'Los Angeles|Qingdao|Cape of Good Hope': 56, 'Los Angeles|Qingdao|Suez': 53, 'Los Angeles|Shanghai|Panama': 18, 'Los Angeles|Shanghai|Cape of Good Hope': 55, 'Los Angeles|Shanghai|Suez': 52, 'Los Angeles|Shenzhen|Panama': 20, 'Los Angeles|Shenzhen|Cape of Good Hope': 52, 'Los Angeles|Shenzhen|Suez': 49, 'New York|Guangzhou|Panama': 36, 'New York|Guangzhou|Cape of Good Hope': 43, 'New York|Guangzhou|Suez': 37, 'New York|Ningbo|Panama': 34, 'New York|Ningbo|Cape of Good Hope': 45, 'New York|Ningbo|Suez': 38, 'New York|Qingdao|Panama': 34, 'New York|Qingdao|Cape of Good Hope': 47, 'New York|Qingdao|Suez': 40, 'New York|Shanghai|Panama': 33, 'New York|Shanghai|Cape of Good Hope': 46, 'New York|Shanghai|Suez': 39, 'New York|Shenzhen|Panama': 36, 'New York|Shenzhen|Cape of Good Hope': 43, 'New York|Shenzhen|Suez': 36, 'Savannah|Guangzhou|Panama': 34, 'Savannah|Guangzhou|Cape of Good Hope': 44, 'Savannah|Guangzhou|Suez': 39, 'Savannah|Ningbo|Panama': 32, 'Savannah|Ningbo|Cape of Good Hope': 46, 'Savannah|Ningbo|Suez': 40, 'Savannah|Qingdao|Panama': 32, 'Savannah|Qingdao|Cape of Good Hope': 48, 'Savannah|Qingdao|Suez': 42, 'Savannah|Shanghai|Panama': 32, 'Savannah|Shanghai|Cape of Good Hope': 47, 'Savannah|Shanghai|Suez': 41, 'Savannah|Shenzhen|Panama': 34, 'Savannah|Shenzhen|Cape of Good Hope': 44, 'Savannah|Shenzhen|Suez': 38, 'Seattle|Guangzhou|Panama': 18, 'Seattle|Guangzhou|Cape of Good Hope': 56, 'Seattle|Guangzhou|Suez': 54, 'Seattle|Ningbo|Panama': 16, 'Seattle|Ningbo|Cape of Good Hope': 58, 'Seattle|Ningbo|Suez': 55, 'Seattle|Qingdao|Panama': 16, 'Seattle|Qingdao|Cape of Good Hope': 60, 'Seattle|Qingdao|Suez': 57, 'Seattle|Shanghai|Panama': 16, 'Seattle|Shanghai|Cape of Good Hope': 59, 'Seattle|Shanghai|Suez': 56, 'Seattle|Shenzhen|Panama': 18, 'Seattle|Shenzhen|Cape of Good Hope': 56, 'Seattle|Shenzhen|Suez': 53}
+    this_dict = {('Shenzhen|New York|Cape of Good Hope'):(13771.24929),
+    ('Guangzhou|New York|Cape of Good Hope'):(13801.1163),
+    ('New York|Shenzhen|Cape of Good Hope'):(13771.24929),
+    ('New York|Guangzhou|Cape of Good Hope'):(13801.1163),
+    ('Savannah|Guangzhou|Cape of Good Hope'):(13843.77501),
+    ('Shenzhen|Savannah|Cape of Good Hope'):(13813.908),
+    ('Guangzhou|Savannah|Cape of Good Hope'):(13843.77501),
+    ('Savannah|Shenzhen|Cape of Good Hope'):(13813.908),
+    ('New York|Ningbo|Cape of Good Hope'):(14426.54367),
+    ('Ningbo|New York|Cape of Good Hope'):(14426.54367),
+    ('New York|Shanghai|Cape of Good Hope'):(14493.10262),
+    ('Shanghai|New York|Cape of Good Hope'):(14493.10262),
+    ('Ningbo|Savannah|Cape of Good Hope'):(14469.20238),
+    ('Savannah|Ningbo|Cape of Good Hope'):(14469.20238),
+    ('Savannah|Shanghai|Cape of Good Hope'):(14535.76134),
+    ('Qingdao|New York|Cape of Good Hope'):(14765.90819),
+    ('New York|Qingdao|Cape of Good Hope'):(14765.90819),
+    ('Shanghai|Savannah|Cape of Good Hope'):(14535.76134),
+    ('Qingdao|Savannah|Cape of Good Hope'):(14808.5669),
+    ('Savannah|Qingdao|Cape of Good Hope'):(14808.5669),
+    ('Guangzhou|Long Beach|Cape of Good Hope'):(16393.3512),
+    ('Long Beach|Shenzhen|Cape of Good Hope'):(16363.4842),
+    ('Los Angeles|Guangzhou|Cape of Good Hope'):(16400.04171),
+    ('Shenzhen|Long Beach|Cape of Good Hope'):(16363.4842),
+    ('Guangzhou|Los Angeles|Cape of Good Hope'):(16400.04171),
+    ('Shenzhen|Los Angeles|Cape of Good Hope'):(16370.1747),
+    ('Long Beach|Guangzhou|Cape of Good Hope'):(16393.3512),
+    ('Los Angeles|Shenzhen|Cape of Good Hope'):(16370.1747),
+    ('Ningbo|Long Beach|Cape of Good Hope'):(17018.77858),
+    ('Long Beach|Ningbo|Cape of Good Hope'):(17018.77858),
+    ('Ningbo|Los Angeles|Cape of Good Hope'):(17025.46908),
+    ('Los Angeles|Ningbo|Cape of Good Hope'):(17025.46908),
+    ('Long Beach|Shanghai|Cape of Good Hope'):(17085.33753),
+    ('Los Angeles|Shanghai|Cape of Good Hope'):(17092.02804),
+    ('Shanghai|Long Beach|Cape of Good Hope'):(17085.33753),
+    ('Shanghai|Los Angeles|Cape of Good Hope'):(17092.02804),
+    ('Seattle|Shenzhen|Cape of Good Hope'):(17488.85128),
+    ('Los Angeles|Qingdao|Cape of Good Hope'):(17364.8336),
+    ('Qingdao|Long Beach|Cape of Good Hope'):(17358.1431),
+    ('Seattle|Guangzhou|Cape of Good Hope'):(17518.71829),
+    ('Long Beach|Qingdao|Cape of Good Hope'):(17358.1431),
+    ('Guangzhou|Seattle|Cape of Good Hope'):(17518.71829),
+    ('Qingdao|Los Angeles|Cape of Good Hope'):(17364.8336),
+    ('Shenzhen|Seattle|Cape of Good Hope'):(17488.85128),
+    ('Ningbo|Seattle|Cape of Good Hope'):(18144.14566),
+    ('Seattle|Ningbo|Cape of Good Hope'):(18144.14566),
+    ('Seattle|Shanghai|Cape of Good Hope'):(18210.70462),
+    ('Shanghai|Seattle|Cape of Good Hope'):(18210.70462),
+    ('Seattle|Qingdao|Cape of Good Hope'):(18483.51018),
+    ('Qingdao|Seattle|Cape of Good Hope'):(18483.51018),
+    ('Ningbo|Seattle|Panama'):(5089.262209),
+    ('Seattle|Ningbo|Panama'):(5089.262209),
+    ('Seattle|Qingdao|Panama'):(5090.144791),
+    ('Shanghai|Seattle|Panama'):(5065.038384),
+    ('Seattle|Shanghai|Panama'):(5065.038384),
+    ('Qingdao|Seattle|Panama'):(5090.144791),
+    ('Los Angeles|Shanghai|Panama'):(5710.011498),
+    ('Qingdao|Los Angeles|Panama'):(5735.117905),
+    ('Shanghai|Long Beach|Panama'):(5710.073692),
+    ('Guangzhou|Seattle|Panama'):(5800.010721),
+    ('Seattle|Guangzhou|Panama'):(5800.010721),
+    ('Seattle|Shenzhen|Panama'):(5755.901055),
+    ('Los Angeles|Qingdao|Panama'):(5735.117905),
+    ('Long Beach|Shanghai|Panama'):(5710.073692),
+    ('Long Beach|Ningbo|Panama'):(5734.297517),
+    ('Shenzhen|Seattle|Panama'):(5755.901055),
+    ('Long Beach|Qingdao|Panama'):(5735.180099),
+    ('Qingdao|Long Beach|Panama'):(5735.180099),
+    ('Los Angeles|Ningbo|Panama'):(5734.235323),
+    ('Ningbo|Long Beach|Panama'):(5734.297517),
+    ('Ningbo|Los Angeles|Panama'):(5734.235323),
+    ('Shanghai|Los Angeles|Panama'):(5710.011498),
+    ('Shenzhen|Los Angeles|Panama'):(6400.874169),
+    ('Guangzhou|Long Beach|Panama'):(6445.04603),
+    ('Long Beach|Guangzhou|Panama'):(6445.04603),
+    ('Los Angeles|Guangzhou|Panama'):(6444.983836),
+    ('Shenzhen|Long Beach|Panama'):(6400.936363),
+    ('Long Beach|Shenzhen|Panama'):(6400.936363),
+    ('Guangzhou|Los Angeles|Panama'):(6444.983836),
+    ('Los Angeles|Shenzhen|Panama'):(6400.874169),
+    ('Ningbo|Savannah|Panama'):(10204.87953),
+    ('Savannah|Qingdao|Panama'):(10205.76212),
+    ('Savannah|Ningbo|Panama'):(10204.87953),
+    ('Qingdao|Savannah|Panama'):(10205.76212),
+    ('Savannah|Shanghai|Panama'):(10180.65571),
+    ('Shanghai|Savannah|Panama'):(10180.65571),
+    ('New York|Shanghai|Panama'):(10602.20874),
+    ('Shanghai|New York|Panama'):(10602.20874),
+    ('Savannah|Guangzhou|Panama'):(10899.65958),
+    ('Ningbo|New York|Panama'):(10626.43256),
+    ('Qingdao|New York|Panama'):(10627.31514),
+    ('New York|Ningbo|Panama'):(10626.43256),
+    ('Guangzhou|Savannah|Panama'):(10899.65958),
+    ('Savannah|Shenzhen|Panama'):(10855.54991),
+    ('New York|Qingdao|Panama'):(10627.31514),
+    ('Shenzhen|Savannah|Panama'):(10855.54991),
+    ('Guangzhou|New York|Panama'):(11321.2126),
+    ('New York|Guangzhou|Panama'):(11321.2126),
+    ('New York|Shenzhen|Panama'):(11277.10294),
+    ('Shenzhen|New York|Panama'):(11277.10294),
+    ('New York|Shenzhen|Suez'):(11570.97291),
+    ('Shenzhen|New York|Suez'):(11570.97291),
+    ('Guangzhou|New York|Suez'):(11600.83992),
+    ('New York|Guangzhou|Suez'):(11600.83992),
+    ('Savannah|Shenzhen|Suez'):(12053.96275),
+    ('New York|Ningbo|Suez'):(12250.28227),
+    ('Ningbo|New York|Suez'):(12250.28227),
+    ('Shenzhen|Savannah|Suez'):(12053.96275),
+    ('Shanghai|New York|Suez'):(12316.84122),
+    ('New York|Shanghai|Suez'):(12316.84122),
+    ('Savannah|Guangzhou|Suez'):(12083.82976),
+    ('Guangzhou|Savannah|Suez'):(12083.82976),
+    ('Qingdao|New York|Suez'):(12589.46032),
+    ('New York|Qingdao|Suez'):(12589.46032),
+    ('Ningbo|Savannah|Suez'):(12733.27211),
+    ('Savannah|Ningbo|Suez'):(12733.27211),
+    ('Savannah|Shanghai|Suez'):(12799.83106),
+    ('Shanghai|Savannah|Suez'):(12799.83106),
+    ('Savannah|Qingdao|Suez'):(13072.45016),
+    ('Qingdao|Savannah|Suez'):(13072.45016),
+    ('Shenzhen|Long Beach|Suez'):(15683.8866),
+    ('Los Angeles|Shenzhen|Suez'):(15690.57711),
+    ('Long Beach|Shenzhen|Suez'):(15683.8866),
+    ('Guangzhou|Los Angeles|Suez'):(15720.44412),
+    ('Long Beach|Guangzhou|Suez'):(15713.75361),
+    ('Guangzhou|Long Beach|Suez'):(15713.75361),
+    ('Shenzhen|Los Angeles|Suez'):(15690.57711),
+    ('Los Angeles|Guangzhou|Suez'):(15720.44412),
+    ('Long Beach|Ningbo|Suez'):(16363.19596),
+    ('Ningbo|Los Angeles|Suez'):(16369.88647),
+    ('Los Angeles|Ningbo|Suez'):(16369.88647),
+    ('Ningbo|Long Beach|Suez'):(16363.19596),
+    ('Long Beach|Shanghai|Suez'):(16429.75492),
+    ('Shanghai|Los Angeles|Suez'):(16436.44542),
+    ('Shanghai|Long Beach|Suez'):(16429.75492),
+    ('Los Angeles|Shanghai|Suez'):(16436.44542),
+    ('Shenzhen|Seattle|Suez'):(16809.25369),
+    ('Los Angeles|Qingdao|Suez'):(16709.06452),
+    ('Seattle|Shenzhen|Suez'):(16809.25369),
+    ('Qingdao|Los Angeles|Suez'):(16709.06452),
+    ('Long Beach|Qingdao|Suez'):(16702.37402),
+    ('Qingdao|Long Beach|Suez'):(16702.37402),
+    ('Seattle|Guangzhou|Suez'):(16839.1207),
+    ('Guangzhou|Seattle|Suez'):(16839.1207),
+    ('Ningbo|Seattle|Suez'):(17488.56305),
+    ('Seattle|Ningbo|Suez'):(17488.56305),
+    ('Shanghai|Seattle|Suez'):(17555.122),
+    ('Seattle|Shanghai|Suez'):(17555.122),
+    ('Qingdao|Seattle|Suez'):(17827.74111),
+    ('Seattle|Qingdao|Suez'):(17827.74111)
+    }
     
 
-    return ac
+    
+    a_P=this_dict[str_P]  
+    a_C=this_dict[str_C]
+    a_S=this_dict[str_S]
+    
+    f_P=map_dict[str_P]
+    f_C=map_dict[str_C]
+    f_S=map_dict[str_S]
+    
+    
+    
+    
+  
+
+    
+    if org=='Guangzhou':
+    	org=10
+    elif org=='Ningbo':
+    	org=11
+    elif org=='Qingdao':
+    	org=12
+    elif org=='Shanghai':
+    	org=13
+    elif org=='Shenzhen':
+    	org=14
+    elif org=='Long Beach':
+    	org=15
+    elif org=='Los Angeles':
+    	org=16
+    elif org=='New York':
+    	org=17
+    elif org=='Savanna':
+    	org=18
+    elif org=='Seattle':
+    	org=19
+        
+        
+    if des=='Guangzhou':
+    	des=10
+    elif des=='Ningbo':
+    	des=11
+    elif des=='Qingdao':
+    	des=12
+    elif des=='Shanghai':
+    	des=13
+    elif des=='Shenzhen':
+    	des=14
+    elif des=='Long Beach':
+    	des=15
+    elif des=='Los Angeles':
+    	des=16
+    elif des=='New York':
+    	des=17
+    elif des=='Savanna':
+    	des=18
+    elif des=='Seattle':
+    	des=19
+        
+    
+
+        
+        
+    OR=int(org)
+    DS=int(des)
+    DI_P=float(a_P)
+    DI_C=float(a_C)
+    DI_S=float(a_S)
+    #TR=int(trade)
+    YR=int(year)
+    MN=int(month)
+    WE=int(week)
+    DA=int(day)
+    DW=int(dateweek)
+    #WE=float(weight)
+    
+    
+    
+    TR_P=int(4)
+    list_P=[OR,DS,DI_P,TR_P,YR,MN,WE,DA,DW]
+    TR_C=int(5)
+    list_C=[OR,DS,DI_C,TR_C,YR,MN,WE,DA,DW]
+    TR_S=int(6)
+    list_S=[OR,DS,DI_S,TR_S,YR,MN,WE,DA,DW]
 
 
+    final_features_P = [np.array(list_P)]
+    final_features_C = [np.array(list_C)]
+    final_features_S = [np.array(list_S)]
+    
+    prediction_P = model.predict(final_features_P)
+    prediction_C = model.predict(final_features_C)
+    prediction_S = model.predict(final_features_S)
+    output_P = int(prediction_P[0])
+    output_C = int(prediction_C[0])
+    output_S = int(prediction_S[0])
+
+    url = 'https://raw.githubusercontent.com/cozentus-satyabrata/coz/master/data.csv'
+    df = pd.read_csv(url)
+    df["StDate"]=pd.to_datetime(df["StDate"])
+    df["ETA"]=pd.to_datetime(df["ETA"])
+    df["ATA"]=pd.to_datetime(df["ATA"])
+    
+    df['ETA_DI'] = abs(df['StDate'] - df['ETA'])
+    df['ATA_DI'] = abs(df['StDate'] - df['ATA'])
+    df['ETA_T']=df['ETA_DI']/np.timedelta64(1,'h')
+    df['ATA_T']=df['ATA_DI']/np.timedelta64(1,'h')
+    df["ETA_D"]=df["ETA_T"]/24
+    df["ATA_D"]=df["ATA_T"]/24
+    df=df.drop(['ETA_DI', 'ATA_DI' ,'ETA_T','ATA_T'], axis = 1)
+    df["ETA_D"]=df["ETA_D"].round(2)
+    df["ATA_D"]=df["ATA_D"].round(2)
+    df["ETA_D_INT"]=df["ETA_D"].astype(int)
+    df["ATA_D_INT"]=df["ATA_D"].astype(int)
+    print(df)
+ 
+    df_new_P=df[(df['Origin']==o) & (df["Destination"]==d) & (df['TradeRoute'] == Canal_P)  & ((df['ATA_D_INT'] == output_P+1) | (df['ATA_D_INT'] == output_P-1) | (df['ATA_D_INT'] == output_P)) ]
+    df_new_C=df[(df['Origin']==o) & (df["Destination"]==d) & (df['TradeRoute'] == Canal_C)  & ((df['ATA_D_INT'] == output_C+1) | (df['ATA_D_INT'] == output_C-1) | (df['ATA_D_INT'] == output_C)) ]
+    df_new_S=df[(df['Origin']==o) & (df["Destination"]==d) & (df['TradeRoute'] == Canal_S)  & ((df['ATA_D_INT'] == output_S+1) | (df['ATA_D_INT'] == output_S-1) | (df['ATA_D_INT'] == output_S)) ]
+    a_PC=df_new_P.shape[0]
+    a_CC=df_new_C.shape[0]
+    a_SC=df_new_S.shape[0]
+    p_PC=round(100*round(1/a_PC, 3),2)
+    p_CC=round(100*round(1/a_CC, 3),2)
+    p_SC=round(100*round(1/a_SC, 3),2)
+    dataRow ={'originPort':[o,o,o],'destinationPort':[d,d,d],'startDate':[da,da,da],'predictedEta':[output_P,output_C,output_S],'tradeLaneURl': ["https://etacoz.azurewebsites.net/RoutesMapWeatherMapPanama" , "https://etacoz.azurewebsites.net/RoutesMapWeatherMapCapeofGoodHope","https://etacoz.azurewebsites.net/RoutesMapWeatherMapSuez"],'tradeLaneName':['Panama','Cape of Good Hope','Suez'],'Probablity':[p_PC,p_CC,p_SC],'ETA':[int(f_P),int(f_C),int(f_S)],'Diff':[abs(output_P-int(f_P)),abs(output_C-int(f_C)),abs(output_S-int(f_S))]}
+    respone=jsonify(result=dataRow)
+    respone.status_code=200
+    #print(f_P)
+    return respone
+              
+@app.route("/RoutesMapWeatherMapPanama")
+@cross_origin()
+def RoutesMapWeatherMapGuangzhouNew_YorkPanama():
+    return render_template("RoutesMapWeatherMap"+o+d+"Panama"+".html")
+
+
+
+@app.route('/RoutesMapWeatherMapCapeofGoodHope')
+@cross_origin()
+def RoutesMapWeatherMapGuangzhouNew_YorkCapeofGoodhope():
+    return render_template("RoutesMapWeatherMap"+o+d+"Cape of Good Hope"+".html")
+
+
+
+@app.route('/RoutesMapWeatherMapSuez')
+@cross_origin()
+def RoutesMapWeatherMapGuangzhouNew_YorkSuez():
+    return render_template("RoutesMapWeatherMap"+o+d+"Suez"+".html")          
 
 if __name__ == "__main__":
     app.run(debug=False)
