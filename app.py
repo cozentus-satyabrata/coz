@@ -291,27 +291,27 @@ def predict():
     	des=19
         
     
-    sh=random.randrange(1,10)
-    if (sh==1 or sh==3 or sh==5) :
+    sh=random.randrange(1,18)
+    if (sh==1 or sh==3 or sh==5 or sh==7 or sh==9 or sh==11) :
         SH_F='Maersk'
-    elif (sh==2 or sh==8 or sh==9 or sh==6):
+    elif (sh==2 or sh==4 or sh==6 or sh==8 or sh==10 or sh==12):
         SH_F='XPO'
     else:
         SH_F='HPL'
         
-    sh=random.randrange(1,10)
-    if (sh==1 or sh==3 or sh==5) :
+    sh=random.randrange(1,18)
+    if (sh==1 or sh==3 or sh==5 or sh==7 or sh==9 or sh==11) :
         SH_S='Maersk'
-    elif (sh==2 or sh==8 or sh==9 or sh==6):
+    elif (sh==2 or sh==4 or sh==6 or sh==8 or sh==10 or sh==12):
         SH_S='XPO'
     else:
         SH_S='HPL'
         
         
-    sh=random.randrange(1,10)
-    if (sh==1 or sh==3 or sh==5) :
+    sh=random.randrange(1,18)
+    if (sh==1 or sh==3 or sh==5 or sh==7 or sh==9 or sh==11) :
         SH_T='Maersk'
-    elif (sh==2 or sh==8 or sh==9 or sh==6):
+    elif (sh==2 or sh==4 or sh==6 or sh==8 or sh==10 or sh==12):
         SH_T='XPO'
     else:
         SH_T='HPL'
