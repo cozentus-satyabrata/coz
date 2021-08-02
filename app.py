@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Mar  2 08:52:44 2021
-
-@author: DATeam
-"""
 
 import random
 import json as jas
@@ -12,20 +6,30 @@ import numpy as np
 from flask import Flask, request, jsonify, render_template
 import pickle
 from flask_cors import CORS, cross_origin
-#import json
-#import folium 
-#import requests
+import ast
+import requests
+
+import json
+import folium 
+import requests
+import pandas as pd
+from tqdm import tqdm
+from branca.element import Figure
+from folium.features import DivIcon
+
 
 
 
 app = Flask(__name__)
 CORS(app)
+model_s = pickle.load(open('regression_model.pkl', 'rb'))
 model = pickle.load(open('model.pkl', 'rb'))
+
 
 @app.route('/')
 @cross_origin()
 def home():
-    return render_template('homepage.html')
+    return "satya"
 
 @app.route('/predict',methods=['POST'])
 @cross_origin()
@@ -45,13 +49,101 @@ def predict():
     #w=weight
     da=date
     
+    
+    global oo
+    oo=org
+    global dd
+    dd=des
+    
     date=pd.to_datetime(date)
     year=date.year
     month=date.month
     week=date.week
     day=date.day
     dateweek=date.dayofweek
+
     
+    if o=="Guangzhou":
+      delay=0
+    elif o=="Qingdao":
+      delay=1
+    elif o=="LongBeach":
+      delay=2
+    elif o=="LosAngeles":
+      delay=3
+    elif o=="NewYork":
+      delay=4
+    elif o=="Seattle":
+      delay=5
+    else:
+      delay=6
+    
+    org_dict={'Guangzhou':10,'Ningbo':11,'Qingdao':12,'Shanghai':13,'Shenzhen':14,'Long Beach':15,'Los Angeles':16,'New York':17,'Savannah':18,'Seattle':19,'Busan':20,'Wilmington':21,'Wenzhou':22,'Yokohama':23}
+    dest_dict={'Guangzhou':10,'Ningbo':11,'Qingdao':12,'Shanghai':13,'Shenzhen':14,'Long Beach':15,'Los Angeles':16,'New York':17,'Savannah':18,'Seattle':19,'Busan':20,'Wilmington':21,'Wenzhou':22,'Yokohama':23}
+    
+    distance_dict={'Qingdao|Shanghai': 335, 'Shanghai|Ningbo': 134, 'Ningbo|Wenzhou': 234, 'Wenzhou|Busan': 624, 'Busan|Long Beach': 5254, 'Ningbo|Busan': 506, 'Busan|Los Angeles': 5254, 'Busan|Wilmington': 10098, 'Wilmington|Savannah': 628, 'Savannah|New York': 688, 'Busan|Yokohama': 644, 'Yokohama|Seattle': 4247, 'Guangzhou|Shenzhen': 46, 'Shenzhen|Ningbo': 746, 'Ningbo|Shanghai': 134, 'Shanghai|Busan': 481, 'Shenzhen|Shanghai': 872, 'Seattle|Yokohama': 4247, 'Yokohama|Busan': 644, 'Busan|Shanghai': 481, 'Shanghai|Shenzhen': 872, 'Ningbo|Shenzhen': 746, 'New York|Savannah': 688, 'Savannah|Wilmington': 628, 'Wilmington|Busan': 10098, 'Los Angeles|Busan': 5254, 'Long Beach|Busan': 5254, 'Shenzhen|Guangzhou': 46, 'Busan|Ningbo': 506, 'Busan|Wenzhou': 624, 'Wenzhou|Ningbo': 234, 'Shanghai|Qingdao': 335}
+    
+    org_dest=str(o)+"|"+str(d)
+
+    result_predicted_Route_One=[]
+    result_predicted_Route_Two=[]
+    
+
+    df_route=pd.read_csv("SplittedRoutes_model_prediction.csv")
+    for i in range(len(list(df_route["Routes"]))):
+        
+        c=str(df_route["Routes"][i])
+        res = ast.literal_eval(c)
+    
+        if (o==res[0] and d==res[-1]):
+              routee=res
+              xpos=i
+    
+    print(xpos)
+    c_new=(df_route["Routes"][xpos-1])
+    res_new= ast.literal_eval(c_new)
+    
+    
+    # predicted output for route 1
+    for i in range(len(res_new)-1):
+  
+        o_num=org_dict[res_new[i]]
+        d_num=dest_dict[res_new[i+1]]
+        dis_n=distance_dict[str(res_new[i]+"|"+res_new[i+1])]
+        route1_res=model_s.predict([[int(o_num),int(d_num),dis_n,year,month,week,day,dateweek,delay]])
+        result_predicted_Route_One.append( int(route1_res[0]))
+
+    a=0
+    for i in result_predicted_Route_One:
+      a=a+i
+    print("NO OF PORT CALLS:",len(result_predicted_Route_One))
+    portcall_one=len(result_predicted_Route_One)
+    print("PREDICTED ETA FOR ROUTE ONE:",a)
+    eta_split_one=a
+    print(res_new)
+    print(routee)
+    
+    #predicted output for route 2
+    for i in range(len(routee)-1):
+        # print(res_new[i]+"|"+res_new[i+1],distance_dict[str(res_new[i]+"|"+res_new[i+1])])       
+        o_num=org_dict[routee[i]]
+        d_num=dest_dict[routee[i+1]]
+        dis_n=distance_dict[str(routee[i]+"|"+routee[i+1])]
+        print(o_num)
+        print(d_num)
+        route2_res=model_s.predict([[int(o_num),int(d_num),dis_n,year,month,week,day,dateweek,delay]])
+        print(route2_res)
+        # result_predicted_Route_Two.append(res_new[i]+"|"+res_new[i+1])
+        
+        result_predicted_Route_Two.append( int(route2_res[0]))
+    az=0
+    for g in result_predicted_Route_Two:
+        az=az+g
+    print("NO OF PORT CALLS ",len(result_predicted_Route_Two))
+    portcall_two=len(result_predicted_Route_Two)
+    print("PREDICTED ETA FOR ROUTE TWO",az)
+    eta_split_two=az
+
     
     Origin = org
     Destination = des
@@ -62,10 +154,11 @@ def predict():
     q=Canal_C
     t=Canal_S
 
+    #maps old
+    df = pd.read_excel("Routes_Clean.xlsx")
+    df_new=df.loc[(df['Origin']==o) & (df['Destination']==d) & (df['TradeRoute']==Canal_C)]
 
-    
-    
-    
+
     str_P = Origin+"|"+Destination+"|"+Canal_P
     str_C = Origin+"|"+Destination+"|"+Canal_C
     str_S = Origin+"|"+Destination+"|"+Canal_S
@@ -263,7 +356,7 @@ def predict():
     	org=16
     elif org=='New York':
     	org=17
-    elif org=='Savanna':
+    elif org=='Savannah':
     	org=18
     elif org=='Seattle':
     	org=19
@@ -285,7 +378,7 @@ def predict():
     	des=16
     elif des=='New York':
     	des=17
-    elif des=='Savanna':
+    elif des=='Savannah':
     	des=18
     elif des=='Seattle':
     	des=19
@@ -352,8 +445,8 @@ def predict():
     output_C = int(prediction_C[0])
     output_S = int(prediction_S[0])
 
-    url = 'https://raw.githubusercontent.com/cozentus-satyabrata/coz/master/data.csv'
-    df = pd.read_csv(url)
+    # url = 'https://raw.githubusercontent.com/cozentus-satyabrata/coz/master/data.csv'
+    df = pd.read_csv("data.csv")
     df["StDate"]=pd.to_datetime(df["StDate"])
     df["ETA"]=pd.to_datetime(df["ETA"])
     df["ATA"]=pd.to_datetime(df["ATA"])
@@ -369,7 +462,7 @@ def predict():
     df["ATA_D"]=df["ATA_D"].round(2)
     df["ETA_D_INT"]=df["ETA_D"].astype(int)
     df["ATA_D_INT"]=df["ATA_D"].astype(int)
-    print(df)
+    # print(df)
  
     df_new_P=df[(df['Origin']==o) & (df["Destination"]==d) & (df['TradeRoute'] == Canal_P)  & ((df['ATA_D_INT'] == output_P+1) | (df['ATA_D_INT'] == output_P-1) | (df['ATA_D_INT'] == output_P)) ]
     df_new_C=df[(df['Origin']==o) & (df["Destination"]==d) & (df['TradeRoute'] == Canal_C)  & ((df['ATA_D_INT'] == output_C+1) | (df['ATA_D_INT'] == output_C-1) | (df['ATA_D_INT'] == output_C)) ]
@@ -380,31 +473,88 @@ def predict():
     p_PC=round(100*round(1/a_PC, 3),2)
     p_CC=round(100*round(1/a_CC, 3),2)
     p_SC=round(100*round(1/a_SC, 3),2)
-    #dataRow ={'originPort':[o,o,o],'destinationPort':[d,d,d],'startDate':[da,da,da],'predictedEta':[output_P,output_C,output_S],'tradeLaneURl': ["https://etacoz.azurewebsites.net/RoutesMapWeatherMapPanama" , "https://etacoz.azurewebsites.net/RoutesMapWeatherMapCapeofGoodHope","https://etacoz.azurewebsites.net/RoutesMapWeatherMapSuez"],'tradeLaneName':['Panama','Cape of Good Hope','Suez'],'Probablity':[int(PR_P),int(PR_C),int(PR_S)],'ETA':[int(f_P),int(f_C),int(f_S)],'Diff':[abs(output_P-int(f_P)),abs(output_C-int(f_C)),abs(output_S-int(f_S))],'carbonEmission':[CE_P,CE_C,CE_S],'shippingCost':[CS_P,CS_C,CS_S],'shippingLine':[SH_F,SH_S,SH_T]}
-    dataRow ={'originPort':[o,o,o],'destinationPort':[d,d,d],'startDate':[da,da,da],'predictedEta':[output_P,output_C,output_S],'tradeLaneURl': ["https://etacoz.azurewebsites.net/RoutesMapWeatherMapPanama" , "https://etacoz.azurewebsites.net/RoutesMapWeatherMapCapeofGoodHope","https://etacoz.azurewebsites.net/RoutesMapWeatherMapSuez"],'tradeLaneName':['Panama','Cape of Good Hope','Suez'],'portCalls':[5,6,0],'Probablity':[int(PR_P),int(PR_C),int(PR_S)],'ETA':[int(f_P),int(f_C),int(f_S)],'Diff':[abs(output_P-int(f_P)),abs(output_C-int(f_C)),abs(output_S-int(f_S))],'carbonEmission':[CE_P,CE_C,CE_S],'shippingCost':[CS_P,CS_C,CS_S],'shippingLine':[SH_F,SH_S,SH_T]}
+    
+    #map generation of individual for route1
+    df = pd.read_csv(r"ROUTE_LAT_LON_COMBINED_ULTIMATE.csv")
+    lat_new=[]
+    lon_new=[]
+    lon_new_=[]
+    df_i=pd.read_csv("experiment_Data_new_new.csv")
+    points=[]
+    data = pd.DataFrame( columns = ['Origin','Destination','lat','lon'])
+       
+    
+    
+    
+    for i in tqdm(range(len(list(df["Routes"])))):
+        c=str(df["Routes"][i])
+        res = ast.literal_eval(c) 
+        if (o==res[0] and d==res[-1]):
+            routee=res
+            xpos=i
+    
+    
+    c_new=(df["Routes"][xpos-1])
+    res_new= ast.literal_eval(c_new)       
+    
+   
+    
+    
+    df_g=pd.read_csv("file_dict_lat_lon.csv")  
+    boolean_series = df_g.Origin.isin(res_new)
+    filtered_df = df_g[boolean_series]
+    # filtered_df=filtered_df.drop(['Unnamed: 0'], axis=1)
+    filtered_df=filtered_df.reset_index()
+    locations = filtered_df[['Lat', 'Lon']]
+    locationlist = locations.values.tolist()
+    len(locationlist)
+
+    
+    
+    
+    
+    Canal_P = 'Panama'
+    Canal_C = 'Cape of Good Hope'
+    Canal_S = 'Suez'
+    p=Canal_P
+    q=Canal_C
+    t=Canal_S
+
+    
+    print(oo)
+    print(dd)
+    
+    
+    dataRow ={'originPort':[oo,oo,oo],'destinationPort':[d,d,d],'startDate':[da,da,da],'predictedEta':[eta_split_one,eta_split_two,output_S],'tradeLaneURl': ["http://127.0.0.1:5001/RoutesMapWeatherMapPanama" , "http://127.0.0.1:5001/RoutesMapWeatherMapCapeofGoodHope","http://127.0.0.1:5001/RoutesMapWeatherMapSuez"],'tradeLaneName':['Panama','Panama','Suez'],'portCalls':[5,6,0],'Probablity':[int(PR_P),int(PR_C),int(PR_S)],'ETA':[50,int(f_C),int(f_S)],'Diff':[abs(eta_split_one-50),abs(eta_split_two-45),abs(output_S-int(f_S))],'carbonEmission':[CE_P,CE_C,CE_S],'shippingCost':[CS_P,CS_C,CS_S],'shippingLine':[SH_F,SH_S,SH_T]}
     respone=jsonify(result=dataRow)
     respone.status_code=200
     #print(f_P)
     return respone
-              
+    
 @app.route("/RoutesMapWeatherMapPanama")
 @cross_origin()
 def RoutesMapWeatherMapGuangzhouNew_YorkPanama():
-    return render_template("RoutesMapWeatherMap"+o+d+"Panama"+".html")
+    return render_template("")
 
 
 
 @app.route('/RoutesMapWeatherMapCapeofGoodHope')
 @cross_origin()
 def RoutesMapWeatherMapGuangzhouNew_YorkCapeofGoodhope():
-    return render_template("RoutesMapWeatherMap"+o+d+"Cape of Good Hope"+".html")
+    print("RoutesMapWeatherMap"+oo+dd+"Cape of Good Hope"+".html")
+    return render_template("")
 
 
 
 @app.route('/RoutesMapWeatherMapSuez')
 @cross_origin()
 def RoutesMapWeatherMapGuangzhouNew_YorkSuez():
-    return render_template("RoutesMapWeatherMap"+o+d+"Suez"+".html")          
+    print("RoutesMapWeatherMap"+oo+dd+"Suez"+".html")
+    return render_template("")   
+    
+    
+    
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=False,port=5001)
+    
