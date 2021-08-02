@@ -13,8 +13,6 @@ import json
 import folium 
 import requests
 import pandas as pd
-from branca.element import Figure
-from folium.features import DivIcon
 
 
 
