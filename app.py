@@ -29,7 +29,7 @@ model = pickle.load(open('model.pkl', 'rb'))
 @app.route('/')
 @cross_origin()
 def home():
-    return "satya"
+    return render_template('homepage.html')
 
 @app.route('/predict',methods=['POST'])
 @cross_origin()
@@ -514,10 +514,6 @@ def predict():
     t=Canal_S
 
     
-    print(oo)
-    print(dd)
-    
-    
     dataRow ={'originPort':[oo,oo,oo],'destinationPort':[d,d,d],'startDate':[da,da,da],'predictedEta':[eta_split_one,eta_split_two,output_S],'tradeLaneURl': ["" , "",""],'tradeLaneName':['Panama','Panama','Suez'],'portCalls':[5,6,0],'Probablity':[int(PR_P),int(PR_C),int(PR_S)],'ETA':[50,int(f_C),int(f_S)],'Diff':[abs(eta_split_one-50),abs(eta_split_two-45),abs(output_S-int(f_S))],'carbonEmission':[CE_P,CE_C,CE_S],'shippingCost':[CS_P,CS_C,CS_S],'shippingLine':[SH_F,SH_S,SH_T]}
     respone=jsonify(result=dataRow)
     respone.status_code=200
@@ -528,5 +524,5 @@ def predict():
     
 
 if __name__ == "__main__":
-    app.run(debug=False,port=5001)
+    app.run(debug=False)
     
