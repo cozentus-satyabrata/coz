@@ -13,7 +13,6 @@ import json
 import folium 
 import requests
 import pandas as pd
-from tqdm import tqdm
 from branca.element import Figure
 from folium.features import DivIcon
 
@@ -479,6 +478,7 @@ def predict():
     lat_new=[]
     lon_new=[]
     lon_new_=[]
+    
     df_i=pd.read_csv("https://raw.githubusercontent.com/cozentus-satyabrata/files/main/experiment_Data_new_new.csv")
     points=[]
     data = pd.DataFrame( columns = ['Origin','Destination','lat','lon'])
@@ -486,7 +486,7 @@ def predict():
     
     
     
-    for i in tqdm(range(len(list(df["Routes"])))):
+    for i in range(len(list(df["Routes"]))):
         c=str(df["Routes"][i])
         res = ast.literal_eval(c) 
         if (o==res[0] and d==res[-1]):
